@@ -1,0 +1,38 @@
+ishank@ishank-HP-430-Notebook-PC:~$ mysql -u root -p8888
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 39
+Server version: 5.1.49-1ubuntu8.1 (Ubuntu)
+
+Copyright (c) 2000, 2010, Oracle and/or its affiliates. All rights reserved.
+This software comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to modify and redistribute it under the GPL v2 license
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database vtaap;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> create user vtaap_user@localhost identified by 'vinsol';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> grant all on vtaap.* to vtaap_user;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> exit;
+Bye
+ishank@ishank-HP-430-Notebook-PC:~$ mysql -u vtaap_user -pvinsol
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 46
+Server version: 5.1.49-1ubuntu8.1 (Ubuntu)
+
+Copyright (c) 2000, 2010, Oracle and/or its affiliates. All rights reserved.
+This software comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to modify and redistribute it under the GPL v2 license
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use vtaap
+Database changed
+mysql> use blog
+ERROR 1044 (42000): Access denied for user 'vtaap_user'@'localhost' to database 'blog'
+
