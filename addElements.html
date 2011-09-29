@@ -1,0 +1,158 @@
+<html>
+<head>
+<title>Dynamic navigaion</title>
+<style>
+body
+{
+	margin:0px;
+}
+li
+{
+	width:100px;
+}
+label
+{
+	
+	background:#dddddd;
+	cursor:pointer;
+	list-style:none;
+	display:inline;
+	position:relative;
+	border:1px #126712 solid;
+}
+ul
+{
+	padding:0px;
+	margin:0px;
+}
+div ul li
+{
+	cursor:pointer;
+	border:1px #126712 solid;
+	position:relative;
+	display:inline;
+	list-style:none;
+	left:-1px;
+	background:#dddddd;
+}
+li ul
+{
+	position:absolute;
+	left:0px;
+}
+ul
+{
+	padding:0px;
+	margin:0px;
+}
+li ul li
+{
+	display:block;
+	position:relative;
+	width:100px;
+}
+li ul li ul li
+{
+	display:block;
+	position:relative;
+	width:100px;
+	left: 100px;
+	    position: relative;
+	    top: -21px;
+}
+table
+{
+	height:100%;
+	width:100%;
+	position:absolute;
+	text-align:center;
+}
+#popup
+{
+	display:none;
+	background:#ffffff;
+	height:100px;
+	vertical-align:middle;
+}
+.nPosition
+{
+	top:50px;
+	left:50px;
+	position:absolute;
+}
+</style>
+<script type='text/javascript'>
+var c = 0;
+var s = 0;
+var ini = 0;
+var fr=0;
+function replaceText(a1)
+{
+	var re = /[0-9]+/;
+	if(fr == 0 && !re.test(a1.id))
+	{
+		a1.id = "currentElement";
+		document.getElementById('popup').style.display = 'block';
+		document.getElementById('popUpContainer').style.background = '#aaaaaa';
+		fr=1;
+	}
+}
+function cancelReplace()
+{	
+	document.getElementById('popup').style.display = 'none';
+	document.getElementById('popUpContainer').style.background = '#ffffff';
+	document.getElementById('valueOfNavigation').value = '';
+}
+function addText()
+{
+	var valueOfNavigation = document.getElementById('valueOfNavigation').value;
+	var obj = document.getElementById("currentElement");
+	var parent = obj.parentNode;
+	if(valueOfNavigation != "" )
+	{				
+		obj.innerHTML = valueOfNavigation;
+		var childUL = document.createElement('ul');
+		var childLI = document.createElement('li');
+		childLI.innerHTML = "Add Child";
+		childLI.addEventListener("click", function(){ replaceText(this); }, false);
+		var sibling = document.createElement('li');
+		sibling.innerHTML = "Add Sibling";
+		sibling.addEventListener("click", function(){ replaceText(this); }, false);
+		var ul = obj.appendChild(childUL);
+		ul.appendChild(childLI);
+		parent.appendChild(sibling);
+		document.getElementById('popup').style.display = 'none';
+		document.getElementById('popUpContainer').style.background = '#ffffff';
+		document.getElementById('valueOfNavigation').value = '';
+		obj.id = s;
+		obj.removeEventListener("click", function(){ replaceText(this); }, false);
+		s++;
+		fr=0;
+	}
+	else
+	{
+		alert("Please enter some value!")
+	}
+	
+}
+</script>
+</head>
+<body>
+<table  valign='middle' id='popUpContainer'>
+<tr>
+<td valign='middle'>
+<div id='popup'>
+<br><br>
+<input type='text' id='valueOfNavigation' /> <label onclick='addText();'>Add</label>  <label onclick='cancelReplace();'>Cancel</label>
+</div>
+</td>
+<tr>
+</table>
+<div class='nPosition'>
+<ul>
+<li onclick="replaceText(this);">Add Item</li>
+</ul>
+</div>
+</body>
+</html>
+
