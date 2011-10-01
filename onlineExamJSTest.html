@@ -1,0 +1,175 @@
+<html>
+<head>
+<style>
+li
+{
+	list-style:none;
+}
+#questionArea
+{
+	border:1px solid black;
+	padding:5px;
+	width: 500px;
+}
+table
+{
+	height:100%;
+}
+#timer
+{
+	position:absolute;
+	left:70%;
+	border:5px solid;
+	padding:5px;
+}
+</style>
+<title>JavaScript Quiz</title>
+<script type="text/javascript">
+var quesReplied = new Array();
+var marks = new Array();
+var n = 0;
+var i = 0;
+var d = 0;
+var NQ = 0;
+var divObj =  "";
+var cAns = "";
+var ansChecked = "";
+var t=0;
+var sc = 0;
+var json = { "questions" : [ 
+{ "question" : "Which HTML tag we use to attach Javascript in to a webpage?", "option1" : "&lt;program&gt;", "option2" : "&lt;javascript&gt;", "option3" : "&lt;script&gt;", "option4" : "&lt;js&gt;", "answer" : "3"}, 
+{ "question" : "If 2 + 2 = 22 and 4 + 4 = 44 then 6 + 6 = ?", "option1" : "12", "option2" : "66", "option3" : "26", "option4" : "1", "answer" : "2"},
+{ "question" : "Which City is the capital of India", "option1" : "New Delhi", "option2" : "Calcutta", "option3" : "Delhi", "option4" : "Mumbai", "answer" : "1"}, 
+{ "question" : "What is the value of 2^3", "option1" : "16", "option2" : "4", "option3" : "8", "option4" : "1", "answer" : "3"}, 
+{ "question" : "Which of these language is not Object Oriented", "option1" : "C++", "option2" : "JAVA", "option3" : "ASP", "option4" : "C", "answer" : "4"},
+{ "question" : "1,4,9,x,25,36,49... What is the value of x ?", "option1" : "20", "option2" : "16", "option3" : "12", "option4" : "19", "answer" : "2"}, 
+{ "question" : "x + 3 = 5, Then what is the value of x ?", "option1" : "2", "option2" : "-2", "option3" : "0", "option4" : "1", "answer" : "1"}, 
+{ "question" : "Which HTML tag we use to declare image", "option1" : "&lt;image&gt;", "option2" : "&lt;img&gt;", "option3" : "&lt;src&gt;", "option4" : "&lt;multimedia&gt;",  "answer" : "2"}, 
+{ "question" : "Which is not a HTMLM Tag", "option1" : "&lt;a&gt;", "option2" : "&lt;b&gt;", "option3" : "&lt;p&gt;", "option4" : "&lt;c&gt;", "answer" : "4"}, ] };
+function showQuestion()
+{
+	if(n == 0)
+	{
+		timer();
+	}
+	divObj = document.getElementById("questionArea");
+	d = 0;
+	while(1==1)
+	{
+		d = 0;
+		NQ = 9;
+		NQ = parseInt((Math.random()*10));
+		for(i = 0; i<quesReplied.length ; i++)
+		{
+			if(quesReplied[i] == NQ || NQ == 9)
+			{
+				d = 1;
+			}		
+		}
+		if(NQ == 9)
+		{
+			NQ = parseInt((Math.random()*10));
+			d = 1;
+		}
+		if(d==0)
+		{
+			break;
+		}
+	}
+	divObj.innerHTML = "Question : " + json.questions[NQ].question +
+	"<ul><li><input type='checkbox' name='optionSelected' value='1'>" + json.questions[NQ].option1 +
+	"</li><li><input type='checkbox' name='optionSelected' value='2'>" + json.questions[NQ].option2 + 
+	"</li><li><input type='checkbox' name='optionSelected' value='3'>" + json.questions[NQ].option3 + 
+	"</li><li><input type='checkbox' name='optionSelected' value='4'>" + json.questions[NQ].option4 + "</li></ul>" +
+	"<div align='right'><input type='button' onclick='nextQuestion();' value='Next Question'>"; 	
+	quesReplied[n] = NQ;
+	if(n == 5)
+	{
+		quizCompleted();
+	}	
+}
+function nextQuestion()
+{
+	sc = 0;
+	var ans = document.getElementsByName("optionSelected");
+	for(i=0;i<4;i++)
+	{
+		if(ans[i].checked == true)
+		{
+			ansChecked = ans[i].value;
+			sc = 1;
+		}
+	}
+	if(sc == 1)
+	{
+		cAns = json.questions[NQ].answer;
+		if(ansChecked == json.questions[NQ].answer)
+		{
+			marks[n] = 4;
+		}
+		else
+		{
+			if(cAns == 1)
+			{
+				alert("Incorrect\nThe Correct Answer is "+json.questions[NQ].option1);
+			}
+			else if(cAns == 2)
+			{
+				alert("Incorrect\nThe Correct Answer is "+json.questions[NQ].option2);
+			}
+			else if(cAns == 3)
+			{
+				alert("Incorrect\nThe Correct Answer is "+json.questions[NQ].option3);
+			}
+			else
+			{
+				alert("Incorrect\nThe Correct Answer is "+json.questions[NQ].option4);
+			}
+			marks[n] = -1;
+		}
+		n++;
+		showQuestion();
+	}
+	else
+	{
+		alert("Please select one answer!");
+	}
+}
+function quizCompleted()
+{
+	var total = 0;
+	for(i=0;i<marks.length;i++)
+	{
+		total = total + marks[i];
+	}
+	t=300;
+	divObj.innerHTML = "Your total marks : "+total;
+}
+function timeUp()
+{
+	if(t==300)
+	{
+		quizCompleted();
+	}
+	else
+	{
+		t++;
+		document.getElementById("timer").innerHTML = t+"/300";
+		timer();
+	}
+}
+function timer()
+{
+	setTimeout(timeUp, 1000);
+}
+
+</script>
+</head>
+<body onload="showQuestion();">
+<div id="timer">0/300</div>
+<table align='center' valign='middle'>
+<tr><td>
+<div id='questionArea'></div>
+</td></tr></table>
+</body>
+</html>
