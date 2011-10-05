@@ -1,9 +1,6 @@
 class String
-
-	@@i = 0
-	
 	def to_s
-		str = ""+initialize()+""
+		str = initialize()
 		i = 0
 		while(i < str.length)
 			ascii_code = str[i].ord
